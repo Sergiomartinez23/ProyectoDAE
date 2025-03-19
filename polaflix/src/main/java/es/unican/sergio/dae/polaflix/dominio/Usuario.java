@@ -137,7 +137,6 @@ public class Usuario {
                 encontrado = true;
             }
         }
-        System.out.println("prueba");
         
         for (Serie seriePorVer : seriesPorVer) {
             if (seriePorVer.equals(serie)) {
@@ -151,8 +150,9 @@ public class Usuario {
             capsVistosSerie.addCapitulo(capVisto);
             series.add(capsVistosSerie);
         }
-
+        System.out.println("Capitulo visto: " + capitulo.getTitulo());
         if (modoDePago == Pago.porVisualizacion) {
+            System.out.println("Precio: " + capitulo.getPrecio());
             factura.addCapitulo(capitulo.getPrecio(), temporada, numero, serie);
         }
         else {

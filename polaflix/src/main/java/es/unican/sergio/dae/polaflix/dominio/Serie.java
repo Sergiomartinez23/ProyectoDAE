@@ -20,7 +20,6 @@ public class Serie {
         this.capitulos = new ArrayList<>();
         this.episodiosporTemporada = new ArrayList<>(temporadas);
         this.temporadas = temporadas;
-        this.episodiosporTemporada = Arrays.asList(1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
     }
 
     public String getTitulo() {
@@ -44,6 +43,9 @@ public class Serie {
     }
     public int getLastCapitulo() {
         return episodiosporTemporada.get(temporadas-1);
+    }
+    public int getCapitulosTemporada(int temporada) {
+        return episodiosporTemporada.get(temporada-1);
     }
     public Capitulo getCapitulo(int temporada, int episodio) {
         int pos = 0;
