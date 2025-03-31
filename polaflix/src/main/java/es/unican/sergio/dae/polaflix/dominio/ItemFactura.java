@@ -1,12 +1,16 @@
 package es.unican.sergio.dae.polaflix.dominio;
 
+import jakarta.persistence.*;
 
 import java.util.*;
+
+@Entity
 public class ItemFactura {
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)  private int id;
     private float precio;
     private int temporada;
     private int numero;
-    private Serie serie;
+    @OneToOne private Serie serie;
     private Date fecha;
 
     public ItemFactura(float precio, int temporada, int numero, Serie serie) {

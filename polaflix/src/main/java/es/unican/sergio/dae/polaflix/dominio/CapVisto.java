@@ -1,7 +1,12 @@
 package es.unican.sergio.dae.polaflix.dominio;
 
 import java.util.*;
+
+import jakarta.persistence.*;
+@Entity
 public class CapVisto {
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)  private int id;
+
     private int numero;
     private int temporada;
     private Date fecha;

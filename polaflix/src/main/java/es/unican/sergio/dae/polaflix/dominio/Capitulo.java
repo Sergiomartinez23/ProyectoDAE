@@ -2,14 +2,18 @@ package es.unican.sergio.dae.polaflix.dominio;
 
 import java.util.*;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Capitulo {
-    // Removed Tipo enum, now using Serie.Tipo
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)  private int id;
+
     private int numero;
     private String titulo;
     private String descripcion;
     private String url;
     private int temporada;
-    private Serie   serie;
+    @OneToOne private Serie   serie;
     public Capitulo(int numero, String titulo, String descripcion, String url, int temporada, Serie serie) {
         this.numero = numero;
         this.titulo = titulo;

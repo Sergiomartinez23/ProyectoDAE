@@ -3,7 +3,11 @@ package es.unican.sergio.dae.polaflix.dominio;
 
 import java.util.*;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Usuario {
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)  private int id;
 
     public enum Pago {
         porVisualizacion, mensual
@@ -11,16 +15,16 @@ public class Usuario {
     private Pago modoDePago;
     private String nombre;
     private String iban;
-    private String contraseña;
-    private List<Factura> facturas;
-    private List<CapsVistosSerie> series;
-    private List<Serie> seriesPorVer;
+    private String contrasenha;
+    @OneToMany private List<Factura> facturas;
+    @OneToMany(cascade = CascadeType.REMOVE) private List<CapsVistosSerie> series;
+    @OneToMany(cascade = CascadeType.REMOVE) private List<Serie> seriesPorVer;
 
-    public Usuario(Pago modoDePago, String nombre, String iban, String contraseña) {
+    public Usuario(Pago modoDePago, String nombre, String iban, String contrasenha) {
         this.modoDePago = modoDePago;
         this.nombre = nombre;
         this.iban = iban;
-        this.contraseña = contraseña;
+        this.contrasenha = contrasenha;
         this.facturas = new ArrayList<>();
         this.series = new ArrayList<>();
         this.seriesPorVer = new ArrayList<>();
@@ -51,17 +55,17 @@ public class Usuario {
         this.iban = iban;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getContrasenha() {
+        return contrasenha;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setContrasenha(String contrasenha) {
+        this.contrasenha = contrasenha;
     }
 
-    public Factura getFactura(int mes, int año) {
+    public Factura getFactura(int mes, int anho) {
         for (Factura factura : facturas) {
-            if (factura.getMonth() == mes && factura.getAño() == año) {
+            if (factura.getMonth() == mes && factura.getAnho() == anho) {
                 return factura;
             }
         }
@@ -71,12 +75,13 @@ public class Usuario {
     public Factura ultimaFactura() {
         return facturas.get(facturas.size() - 1);
     }
+    
     public void addFactura() {
         int importe = 0;
         if (modoDePago == Pago.mensual) {
             importe = 20;
         }
-        Factura factura = new Factura(this, importe);
+        Factura factura = new Factura(importe);
         this.facturas.add(factura);
     }
 

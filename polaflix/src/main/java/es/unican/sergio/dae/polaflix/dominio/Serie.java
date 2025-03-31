@@ -2,13 +2,17 @@ package es.unican.sergio.dae.polaflix.dominio;
 
 import java.util.*;
 
+import jakarta.persistence.*;
+@Entity
 public class Serie {
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)  private int id;
+
     public enum Tipo {
         silver, gold, estandar
     }
     private String titulo;
     private String descripcion;
-    private List<Capitulo> capitulos;
+    @OneToMany(cascade = CascadeType.REMOVE) private List<Capitulo> capitulos;
     private Tipo tipo;
     private List<Integer> episodiosporTemporada;
     private int temporadas;
@@ -18,8 +22,9 @@ public class Serie {
         this.descripcion = descripcion;
         this.tipo = tipo;
         this.capitulos = new ArrayList<>();
-        this.episodiosporTemporada = new ArrayList<>(temporadas);
         this.temporadas = temporadas;
+        // this.episodiosporTemporada = new ArrayList<>(temporadas);
+        this.episodiosporTemporada = new ArrayList<>(Arrays.asList(1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
     }
 
     public String getTitulo() {
