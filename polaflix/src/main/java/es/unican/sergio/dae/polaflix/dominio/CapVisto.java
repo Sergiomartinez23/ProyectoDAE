@@ -10,11 +10,17 @@ public class CapVisto {
     private int numero;
     private int temporada;
     private Date fecha;
+
+    public CapVisto() {
+     
+    }
     public CapVisto (int numero, int temporada) {
         this.numero = numero;
         this.temporada = temporada;
     }
-
+    public int getId() {
+        return id;
+    }
     public int getNumero() {
         return numero;
     }

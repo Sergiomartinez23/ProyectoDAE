@@ -16,10 +16,11 @@ public class Usuario {
     private String nombre;
     private String iban;
     private String contrasenha;
-    @OneToMany private List<Factura> facturas;
-    @OneToMany(cascade = CascadeType.REMOVE) private List<CapsVistosSerie> series;
-    @OneToMany(cascade = CascadeType.REMOVE) private List<Serie> seriesPorVer;
-
+    @OneToMany(cascade = CascadeType.PERSIST) private List<Factura> facturas;
+    @OneToMany(cascade = CascadeType.ALL) private List<CapsVistosSerie> series;
+    @OneToMany private List<Serie> seriesPorVer;
+    public Usuario() {
+    }
     public Usuario(Pago modoDePago, String nombre, String iban, String contrasenha) {
         this.modoDePago = modoDePago;
         this.nombre = nombre;
@@ -30,7 +31,9 @@ public class Usuario {
         this.seriesPorVer = new ArrayList<>();
         addFactura();
     }
-
+    public int getId() {
+        return id;
+    }
     public Pago getModoDePago() {
         return modoDePago;
     }

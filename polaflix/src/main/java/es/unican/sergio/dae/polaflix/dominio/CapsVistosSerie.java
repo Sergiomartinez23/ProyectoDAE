@@ -5,17 +5,22 @@ import java.util.*;
 import jakarta.persistence.*;
 @Entity
 public class CapsVistosSerie {
-    @OneToMany private List<CapVisto> capsVistos; //Usamos doble lista para poder acceder a los capitulos vistos de cada temporada
-    @OneToOne private Serie serie;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) private List<CapVisto> capsVistos; //Usamos doble lista para poder acceder a los capitulos vistos de cada temporada
+    @OneToOne(fetch = FetchType.LAZY) private Serie serie;
     @Id @GeneratedValue(strategy = GenerationType.AUTO)  private int id;
 
+    public CapsVistosSerie() {
+        
+    }
     public CapsVistosSerie(Serie serie) {
         this.serie = serie;
         capsVistos = new ArrayList<CapVisto>();
     }
     
 
-     
+    public int getId() {
+        return id;
+    }
 
     public int addCapitulo(CapVisto capitulo) {
         

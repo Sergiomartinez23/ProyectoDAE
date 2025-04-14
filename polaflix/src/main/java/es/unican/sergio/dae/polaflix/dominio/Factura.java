@@ -13,8 +13,10 @@ public class Factura{
     private int mes;
     private int anho;
     private float importe;
-    @OneToMany(cascade = CascadeType.REMOVE) private List<ItemFactura> items;
+    @OneToMany(cascade = CascadeType.ALL) private List<ItemFactura> items;
     
+    public Factura() {
+    }
     public Factura(int importe) {
         Date date = new Date();
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -24,7 +26,9 @@ public class Factura{
         items = new ArrayList<>();
         // this.usuario = usuario;
     }
-
+    public int getId() {
+        return id;
+    }
     public int getMonth() {
         return mes;
     }

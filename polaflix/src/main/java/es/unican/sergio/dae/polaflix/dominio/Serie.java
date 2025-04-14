@@ -12,11 +12,12 @@ public class Serie {
     }
     private String titulo;
     private String descripcion;
-    @OneToMany(cascade = CascadeType.REMOVE) private List<Capitulo> capitulos;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) private List<Capitulo> capitulos;
     private Tipo tipo;
     private List<Integer> episodiosporTemporada;
     private int temporadas;
-
+    public Serie() {
+    }
     public Serie(String titulo, String descripcion, Tipo tipo, int temporadas) {
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -26,7 +27,9 @@ public class Serie {
         // this.episodiosporTemporada = new ArrayList<>(temporadas);
         this.episodiosporTemporada = new ArrayList<>(Arrays.asList(1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
     }
-
+    public int getId() {
+        return id;
+    }
     public String getTitulo() {
         return titulo;
     }

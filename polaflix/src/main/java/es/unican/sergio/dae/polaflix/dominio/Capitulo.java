@@ -14,6 +14,9 @@ public class Capitulo {
     private String url;
     private int temporada;
     @OneToOne private Serie   serie;
+
+    public Capitulo() {
+    }
     public Capitulo(int numero, String titulo, String descripcion, String url, int temporada, Serie serie) {
         this.numero = numero;
         this.titulo = titulo;
@@ -22,7 +25,9 @@ public class Capitulo {
         this.serie = serie;
         this.temporada = temporada;
     }
-    
+    public int getId() {
+        return id;
+    }
     public Serie getSerie() {
         return serie;
     }

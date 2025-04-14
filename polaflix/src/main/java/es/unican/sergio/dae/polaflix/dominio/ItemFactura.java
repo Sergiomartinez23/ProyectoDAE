@@ -13,6 +13,8 @@ public class ItemFactura {
     @OneToOne private Serie serie;
     private Date fecha;
 
+    public ItemFactura() {
+    }
     public ItemFactura(float precio, int temporada, int numero, Serie serie) {
         this.precio = precio;
         this.temporada = temporada;
@@ -20,7 +22,9 @@ public class ItemFactura {
         this.serie = serie;
         this.fecha = new Date();
     }
-
+    public int getId() {
+        return id;
+    }
     public float getPrecio() {
         return precio;
     }
