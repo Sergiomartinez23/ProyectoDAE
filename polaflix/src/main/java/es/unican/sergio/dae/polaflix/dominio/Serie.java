@@ -3,29 +3,44 @@ package es.unican.sergio.dae.polaflix.dominio;
 import java.util.*;
 
 import jakarta.persistence.*;
+import es.unican.sergio.dae.polaflix.rest.Views;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+
+
 @Entity
 public class Serie {
+    @JsonView({Views.SerieBasic.class, Views.SerieDetail.class, Views.CapituloBasic.class})
     @Id @GeneratedValue(strategy = GenerationType.AUTO)  private int id;
 
     public enum Tipo {
         silver, gold, estandar
     }
+    @JsonView({Views.SerieBasic.class, Views.SerieDetail.class, Views.FacturaDetail.class})
     private String titulo;
+    @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
     private String descripcion;
+    @JsonView(Views.SerieDetail.class)
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) private List<Capitulo> capitulos;
+    @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
     private Tipo tipo;
+    @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
     private List<Integer> episodiosporTemporada;
+    @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
     private int temporadas;
     public Serie() {
+        this.episodiosporTemporada = new ArrayList<>(Arrays.asList(10, 10, 10, 10, 10, 10, 10, 10, 10, 10));
     }
     public Serie(String titulo, String descripcion, Tipo tipo, int temporadas) {
+        this();
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.tipo = tipo;
         this.capitulos = new ArrayList<>();
         this.temporadas = temporadas;
         // this.episodiosporTemporada = new ArrayList<>(temporadas);
-        this.episodiosporTemporada = new ArrayList<>(Arrays.asList(1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
+        this.episodiosporTemporada = new ArrayList<>(Arrays.asList(10, 10, 10, 10, 10, 10, 10, 10, 10, 10));
     }
     public int getId() {
         return id;

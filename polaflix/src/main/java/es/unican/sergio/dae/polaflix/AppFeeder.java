@@ -32,13 +32,16 @@ public class AppFeeder implements CommandLineRunner {
 		Usuario usuario = new Usuario(Usuario.Pago.porVisualizacion, "John Doe", "ES1234567890123456789012", "password123");
         Serie serie1 = new Serie("Serie 1", "desc", Serie.Tipo.gold, 3);
 		usuario.addSeriePorVer(serie1);
-
+        
 
         Serie serie2 = new Serie("Serie 2", "desc", Serie.Tipo.gold, 2);
-
+        Serie serie3 = new Serie("Serie 3", "desc", Serie.Tipo.gold, 2);
+        sr.save(serie3);
+        sr.save(serie2);
+        sr.save(serie1);
         usuario.addSeriePorVer(serie1);
         usuario.addSeriePorVer(serie2);
-
+        usuario.addSeriePorVer(serie3);
         Capitulo capitulo1 = new Capitulo(1, "cap1", "desc", "url", 1, serie1);
         Capitulo capitulo2 = new Capitulo(2, "cap2", "desc", "url", 1, serie1);
         Capitulo capitulo3 = new Capitulo(1, "cap1", "desc", "url", 2, serie2);
@@ -50,17 +53,16 @@ public class AppFeeder implements CommandLineRunner {
         System.out.println("Series por ver: " + usuario.getSeriesPorVer().size());
         System.out.println("Series empezadas: " + usuario.getSeriesEmpezadas().size());
         System.out.println("Series terminadas: " + usuario.getSeriesTerminadas().size());
-        System.out.println("Factura 1: " + usuario.getFactura(4, 2025).getImporte());
+        System.out.println("Factura 1: " + usuario.getFactura(5, 2025).getImporte());
 		System.out.println("Application feeded");
-		sr.save(serie1);
-		sr.save(serie2);
+		
 		ur.save(usuario);
         // Factura fact = usuario.getFactura(4, 2025);
 
         // List<CapsVistosSerie> series = usuario.getSeriesEmpezadas();
 
 
-        ur.delete(usuario);
+        //ur.delete(usuario);
 
 
 		return;

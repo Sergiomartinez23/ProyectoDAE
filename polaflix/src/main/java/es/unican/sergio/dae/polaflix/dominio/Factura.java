@@ -4,15 +4,23 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.persistence.*;
+import es.unican.sergio.dae.polaflix.rest.Views;
+
 @Entity
 public class Factura{
+    @JsonView({Views.UsuarioFactura.class, Views.FacturaDetail.class})
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)  private int id;
     // private Usuario usuario;
+    @JsonView({Views.UsuarioFactura.class, Views.FacturaDetail.class})
     private int mes;
+    @JsonView({Views.UsuarioFactura.class, Views.FacturaDetail.class})
     private int anho;
+    @JsonView({Views.UsuarioFactura.class, Views.FacturaDetail.class})
     private float importe;
+    @JsonView(Views.FacturaDetail.class)
     @OneToMany(cascade = CascadeType.ALL) private List<ItemFactura> items;
     
     public Factura() {

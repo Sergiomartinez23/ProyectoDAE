@@ -3,16 +3,25 @@ package es.unican.sergio.dae.polaflix.dominio;
 import java.util.*;
 
 import jakarta.persistence.*;
+import es.unican.sergio.dae.polaflix.rest.Views;
+import com.fasterxml.jackson.annotation.JsonView;
+
 
 @Entity
 public class Capitulo {
+    @JsonView({Views.SerieDetail.class, Views.CapituloBasic.class})
     @Id @GeneratedValue(strategy = GenerationType.AUTO)  private int id;
-
+    @JsonView({Views.SerieDetail.class, Views.CapituloBasic.class})
     private int numero;
+    @JsonView({Views.SerieDetail.class, Views.CapituloBasic.class})
     private String titulo;
+    @JsonView({Views.SerieDetail.class, Views.CapituloBasic.class})
     private String descripcion;
+    @JsonView({Views.SerieDetail.class, Views.CapituloBasic.class})
     private String url;
+    @JsonView({Views.SerieDetail.class, Views.CapituloBasic.class})
     private int temporada;
+    @JsonView(Views.CapituloBasic.class)
     @OneToOne private Serie   serie;
 
     public Capitulo() {

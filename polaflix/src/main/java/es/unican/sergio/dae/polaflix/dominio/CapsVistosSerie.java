@@ -2,11 +2,17 @@ package es.unican.sergio.dae.polaflix.dominio;
 
 import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import jakarta.persistence.*;
+
+import es.unican.sergio.dae.polaflix.rest.Views;
 @Entity
 public class CapsVistosSerie {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) private List<CapVisto> capsVistos; //Usamos doble lista para poder acceder a los capitulos vistos de cada temporada
+    @JsonView(Views.serieUsuario.class)
     @OneToOne(fetch = FetchType.LAZY) private Serie serie;
+    @JsonView(Views.serieUsuario.class)
     @Id @GeneratedValue(strategy = GenerationType.AUTO)  private int id;
 
     public CapsVistosSerie() {
@@ -35,7 +41,7 @@ public class CapsVistosSerie {
         
         
         for (CapVisto cap : capsVistos) {
-            if (cap.getNumero() == num || cap.getTemporada() == temp) {
+            if (cap.getNumero() == num && cap.getTemporada() == temp) {
                 return -1;
             }
             if (cap.getNumero() > num && cap.getTemporada() == temp) {
@@ -65,5 +71,12 @@ public class CapsVistosSerie {
         }
         
         return capsVistos.get(capsVistos.size()-1).getNumero();
+    }
+    public int numUltimaTemporada() {
+        if (capsVistos.size() == 0) {
+            return 0;
+        }
+        
+        return capsVistos.get(capsVistos.size()-1).getTemporada();
     }
 }
