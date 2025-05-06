@@ -170,7 +170,7 @@ public class UsuarioController {
         return response;
     }
 
-    @PostMapping("verCapitulo/{usuarioId}")
+    @PutMapping("verCapitulo/{usuarioId}")
     public ResponseEntity<?> verCapitulo(@PathVariable Integer usuarioId, @RequestBody Capitulo Capitulo) {
         ResponseEntity<?> response = null;
         try {

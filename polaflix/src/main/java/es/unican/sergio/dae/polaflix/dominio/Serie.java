@@ -29,10 +29,16 @@ public class Serie {
     private List<Integer> episodiosporTemporada;
     @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
     private int temporadas;
+    @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
+    @ManyToMany(cascade = CascadeType.PERSIST) private List<Participante> actores;
+
+    @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
+    @ManyToMany(cascade = CascadeType.PERSIST) private List<Participante> director;
+    
     public Serie() {
         this.episodiosporTemporada = new ArrayList<>(Arrays.asList(10, 10, 10, 10, 10, 10, 10, 10, 10, 10));
     }
-    public Serie(String titulo, String descripcion, Tipo tipo, int temporadas) {
+    public Serie(String titulo, String descripcion, Tipo tipo, int temporadas, List<Participante> actores, List<Participante> director) {
         this();
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -41,6 +47,8 @@ public class Serie {
         this.temporadas = temporadas;
         // this.episodiosporTemporada = new ArrayList<>(temporadas);
         this.episodiosporTemporada = new ArrayList<>(Arrays.asList(10, 10, 10, 10, 10, 10, 10, 10, 10, 10));
+        this.actores = actores;
+        this.director = director;
     }
     public int getId() {
         return id;
