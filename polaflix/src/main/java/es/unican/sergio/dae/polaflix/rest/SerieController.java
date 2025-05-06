@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
+import es.unican.sergio.dae.polaflix.service.*;
 import java.util.List;
 
 @RestController
@@ -24,7 +24,8 @@ public class SerieController {
 
     @Autowired
 	protected serieRepository sr;
-
+    @Autowired
+    protected SerieService ss;
     @GetMapping("/serie/{id}")
     @JsonView(Views.SerieDetail.class)
     public ResponseEntity<Serie> getSerie(@PathVariable Integer id) {
@@ -44,5 +45,17 @@ public class SerieController {
         return sr.findAll();
     }
     
+    @GetMapping("/series/{nombre}")
+    @JsonView(Views.SerieBasic.class)
+    public ResponseEntity<List<Serie>> getSeriesByNombre(@PathVariable String nombre) {
+        List<Serie> series = ss.getSerieNombre(nombre);
+        ResponseEntity<List<Serie>> response = null;
+        if (series.isEmpty()) {
+            response = ResponseEntity.notFound().build();
+        } else {
+            response = ResponseEntity.ok(series);
+        }
+        return response;
+    }
     
 }
