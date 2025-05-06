@@ -30,10 +30,10 @@ public class Serie {
     @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
     private int temporadas;
     @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
-    @ManyToMany(cascade = CascadeType.PERSIST) private List<Participante> actores;
+    @ManyToMany private List<Participante> actores;
 
     @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
-    @ManyToMany(cascade = CascadeType.PERSIST) private List<Participante> director;
+    @ManyToMany private List<Participante> director;
     
     public Serie() {
         this.episodiosporTemporada = new ArrayList<>(Arrays.asList(10, 10, 10, 10, 10, 10, 10, 10, 10, 10));

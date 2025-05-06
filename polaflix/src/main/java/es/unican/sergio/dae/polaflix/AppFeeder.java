@@ -16,6 +16,7 @@ import es.unican.sergio.dae.polaflix.dominio.Participante;
 import es.unican.sergio.dae.polaflix.dominio.Serie;
 import es.unican.sergio.dae.polaflix.dominio.Usuario;
 import es.unican.sergio.dae.polaflix.repository.usuarioRepository;
+import es.unican.sergio.dae.polaflix.repository.participanteRepository;
 import es.unican.sergio.dae.polaflix.repository.serieRepository;
 import es.unican.sergio.dae.polaflix.*;
 import java.util.List;
@@ -26,7 +27,8 @@ public class AppFeeder implements CommandLineRunner {
 	protected usuarioRepository ur;
 	@Autowired
 	protected serieRepository sr;
-
+    @Autowired
+    protected participanteRepository pr;
 	@Override
 	public void run(String... args) throws Exception {
 
@@ -38,11 +40,18 @@ public class AppFeeder implements CommandLineRunner {
         Participante actor5 = new Participante("Actor 5");
         Participante actor6 = new Participante("Actor 6");
 
+        pr.save(actor1);
+        pr.save(actor2);
+        pr.save(actor3);
+        pr.save(actor4);
+        pr.save(actor5);
+        pr.save(actor6);
         Serie serie1 = new Serie("Serie 1", "desc", Serie.Tipo.gold, 3, List.of(actor1), List.of(actor3));
 		
         
 
         Serie serie2 = new Serie("Serie 2", "desc", Serie.Tipo.gold, 2, List.of(actor2), List.of(actor4));
+
         Serie serie3 = new Serie("Serie 3", "desc", Serie.Tipo.gold, 2, List.of(actor5), List.of(actor3, actor4));
         sr.save(serie3);
         sr.save(serie2);
