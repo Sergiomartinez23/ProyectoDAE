@@ -3,7 +3,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import es.unican.sergio.dae.polaflix.dominio.CapVisto;
 import es.unican.sergio.dae.polaflix.dominio.Capitulo;
 import es.unican.sergio.dae.polaflix.dominio.CapsVistosSerie;
@@ -49,14 +52,14 @@ public class UsuarioService {
     }
 
     @Transactional
-    public List<Serie> getSeriesPorVer(Integer usuarioId) {
+    public Set<Serie> getSeriesPorVer(Integer usuarioId) {
         Usuario usuario = ur.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         return usuario.getSeriesPorVer();
     }
 
     @Transactional
-    public List<CapVisto> getCapsVistosSerie(Integer usuarioId, Integer serieId) {
-        List<CapVisto> capitulosVistos = new ArrayList<>();
+    public Set<CapVisto> getCapsVistosSerie(Integer usuarioId, Integer serieId) {
+        Set<CapVisto> capitulosVistos = new HashSet<>();
         Usuario usuario = ur.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         List<CapsVistosSerie> series = usuario.getSeriesEmpezadas();
         for (CapsVistosSerie serie : series) {
@@ -85,11 +88,12 @@ public class UsuarioService {
         sr.findById(serie.getId()).orElseThrow(() -> new RuntimeException("Serie no encontrada" + serie.getId()));
         int ret = usuario.addSeriePorVer(serie);
         if (ret == 1) 
-{
+        {
+            System.out.println("Serie añadida a la lista de pendientes: " + serie.getId());
             ur.save(usuario);
             return ret;
         } else {
-            throw new RuntimeException("Serie ya añadida a la lista de pendientes" + serie.getId());
+            throw new RuntimeException("Serie ya añadida a la lista de pendientes o empezada");
         }
     }
 

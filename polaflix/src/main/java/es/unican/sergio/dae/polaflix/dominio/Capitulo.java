@@ -57,13 +57,13 @@ public class Capitulo {
     }
 
     public float getPrecio() {
-        if (serie.getTipo() == Serie.Tipo.estandar) {
+        if (serie.getTipo() == Tipo.estandar) {
             return 0.5f;
         }
-        else if (serie.getTipo() == Serie.Tipo.silver) {
+        else if (serie.getTipo() == Tipo.silver) {
             return 1.0f;
         }
-        else if (serie.getTipo() == Serie.Tipo.gold) {
+        else if (serie.getTipo() == Tipo.gold) {
             return 1.5f;
         }
         return 0.0f;

@@ -13,9 +13,7 @@ public class Usuario {
     @JsonView(Views.UsuarioBasic.class)
     @Id @GeneratedValue(strategy = GenerationType.AUTO)  private int id;
 
-    public enum Pago {
-        porVisualizacion, mensual
-    }
+   
     @JsonView(Views.UsuarioBasic.class)
     private Pago modoDePago;
     @JsonView(Views.UsuarioBasic.class)
@@ -28,8 +26,8 @@ public class Usuario {
 
     @JsonView(Views.UsuarioFactura.class)
     @OneToMany(cascade = CascadeType.PERSIST) private List<Factura> facturas;
-    @OneToMany(cascade = CascadeType.ALL) private List<CapsVistosSerie> series;
-    @OneToMany private List<Serie> seriesPorVer;
+    @OneToMany(cascade = CascadeType.ALL) private Set<CapsVistosSerie> series;
+    @OneToMany private Set<Serie> seriesPorVer;
     public Usuario() {
     }
     public Usuario(Pago modoDePago, String nombre, String iban, String contrasenha) {
@@ -38,8 +36,8 @@ public class Usuario {
         this.iban = iban;
         this.contrasenha = contrasenha;
         this.facturas = new ArrayList<>();
-        this.series = new ArrayList<>();
-        this.seriesPorVer = new ArrayList<>();
+        this.series = new HashSet<>();
+        this.seriesPorVer = new HashSet<>();
         addFactura();
     }
     public int getId() {
@@ -79,7 +77,7 @@ public class Usuario {
 
     public Factura getFactura(int mes, int anho) {
         for (Factura factura : facturas) {
-            if (factura.getMonth() == mes && factura.getAnho() == anho) {
+            if (factura.equals(factura)) {
                 return factura;
             }
         }
@@ -104,25 +102,27 @@ public class Usuario {
     }
 
 
-    public List<Serie> getSeriesPorVer() {
+    public Set<Serie> getSeriesPorVer() {
         return seriesPorVer;
     }
     public int addSeriePorVer(Serie serie) {
         if (seriesPorVer.contains(serie)) {
+            System.out.println("Serie ya vista: " + serie.getTitulo());
             return 0;
+        }
+        for (CapsVistosSerie caps : series) {
+            if (caps.getSerie().getId() == serie.getId()) {
+                System.out.println("Serie ya vista: " + serie.getTitulo());
+                return 0;
+            }
+            
         }
         seriesPorVer.add(serie);
         return 1;
     }
     public boolean removeSeriePorVer(Serie serie) {
-
-        for (Serie seriePorVer : seriesPorVer) {
-            if (seriePorVer.getId() == serie.getId()) {
-                seriesPorVer.remove(seriePorVer);
-                return true;
-            }
-        }    
-        return false;
+        return seriesPorVer.remove(serie);
+           
     }
     public List<CapsVistosSerie> getSeriesTerminadas() {
         List<CapsVistosSerie> seriesTerminadas = new ArrayList<>();
@@ -163,18 +163,17 @@ public class Usuario {
         boolean encontrado = false; 
         Factura factura = ultimaFactura();
         CapVisto capVisto = new CapVisto(numero, temporada);
-
+        
+        
+        
+        
         for (CapsVistosSerie capsVistosSerie : series) {
-            if (capsVistosSerie.getSerie().getId()==serie.getId()) {  
-                System.out.println(serie.getId()); 
-                List <CapVisto> capitulosVistos = capsVistosSerie.getCapitulosVistos();
-                CapVisto cap;
-                for (int i =0; i<capitulosVistos.size();i++) {
-                    cap = capitulosVistos.get(i);
-                    if (cap.getNumero() == numero && cap.getTemporada() == temporada) {
-                        System.out.println("Capitulo ya visto: " + capitulo.getTitulo());
-                        return;
-                    }
+            if (capsVistosSerie.getSerie().equals(serie)) {  
+                System.out.println("ID:" + serie.getId()); 
+                
+                if (capsVistosSerie.getCapitulosVistos().contains(capVisto)) {
+                    System.out.println("Capitulo ya visto: " + capitulo.getTitulo());
+                    return;
                 }
 
                 int ret = capsVistosSerie.addCapitulo(capVisto);
@@ -185,20 +184,19 @@ public class Usuario {
                 encontrado = true;
             }
         }
-        
-        for (Serie seriePorVer : seriesPorVer) {
-            if (seriePorVer.getId() == serie.getId()) {
-                seriesPorVer.remove(serie);
-                break;
-            }
-        }
-
         if (!encontrado) {
             CapsVistosSerie capsVistosSerie = new CapsVistosSerie(serie);
             capsVistosSerie.addCapitulo(capVisto);
             series.add(capsVistosSerie);
         }
+        
+        if (seriesPorVer.contains(serie)) {
+            seriesPorVer.remove(serie);
+        }
+
         System.out.println("Capitulo visto: " + capitulo.getTitulo());
+
+
         if (modoDePago == Pago.porVisualizacion) {
             System.out.println("Precio: " + capitulo.getPrecio());
             factura.addCapitulo(capitulo.getPrecio(), temporada, numero, serie);

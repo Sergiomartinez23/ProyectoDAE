@@ -54,4 +54,20 @@ public class Factura{
         this.importe = importe;
     }
 
+    @Override
+    public boolean equals (Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (this.anho == ((Factura) obj).getAnho() && this.mes == ((Factura) obj).getMonth()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override 
+    public int hashCode() {
+        return this.id;
+    }
 }

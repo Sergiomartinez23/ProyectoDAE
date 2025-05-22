@@ -1,6 +1,7 @@
 package es.unican.sergio.dae.polaflix.rest;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Optional;
+import java.util.Set;
+
 import es.unican.sergio.dae.polaflix.repository.usuarioRepository;
 import es.unican.sergio.dae.polaflix.rest.Views.SerieBasic;
 import es.unican.sergio.dae.polaflix.dominio.Usuario;
@@ -28,6 +31,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 
 @RestController
+@CrossOrigin(origins = "*")
+
 public class UsuarioController {
 
     @Autowired
@@ -100,10 +105,10 @@ public class UsuarioController {
 
     @GetMapping("/usuarioSeriesPorVer/{usuarioId}")
     @JsonView(Views.SerieBasic.class)
-    public ResponseEntity<List<Serie>> getSeriesUsuarioPorVer (@PathVariable Integer usuarioId) {
-        ResponseEntity<List<Serie>> response = null;
+    public ResponseEntity<Set<Serie>> getSeriesUsuarioPorVer (@PathVariable Integer usuarioId) {
+        ResponseEntity<Set<Serie>> response = null;
         try { 
-            List<Serie> series = us.getSeriesPorVer(usuarioId);
+            Set<Serie> series = us.getSeriesPorVer(usuarioId);
             response = ResponseEntity.ok(series);
         }
         catch (Exception e) {
@@ -115,10 +120,10 @@ public class UsuarioController {
 
     @GetMapping("/capVisto/{usuarioId}/{serieId}")
     @JsonView(Views.serieUsuarioDetail.class)
-    public ResponseEntity<List<CapVisto>> getCapVisto(@PathVariable Integer usuarioId, @PathVariable Integer serieId) {
-        ResponseEntity<List<CapVisto>> response = null;
+    public ResponseEntity<Set<CapVisto>> getCapVisto(@PathVariable Integer usuarioId, @PathVariable Integer serieId) {
+        ResponseEntity<Set<CapVisto>> response = null;
         try {
-            List<CapVisto> capitulosVistos = us.getCapsVistosSerie(usuarioId, serieId);
+            Set<CapVisto> capitulosVistos = us.getCapsVistosSerie(usuarioId, serieId);
             response = ResponseEntity.ok(capitulosVistos);
             
         } catch (Exception e) {
@@ -129,16 +134,20 @@ public class UsuarioController {
     }
 
     @PutMapping("usuarioSeriesPorVer/{usuarioId}")
-    public ResponseEntity<?> seriePendienteAdd(@PathVariable Integer usuarioId, @RequestBody Serie serie) {
+    public ResponseEntity seriePendienteAdd(@PathVariable Integer usuarioId, @RequestBody Serie serie) {
 
-        ResponseEntity<?> response = null;
+        ResponseEntity response = null;
         try  {
             us.anhadirPendiente(serie, usuarioId);
-            response = ResponseEntity.ok("Serie añadida a la lista de pendientes");
+            response =  ResponseEntity.ok().build();
         } catch (Exception e) {
-            if(e.getMessage().equals("Serie no encontrada")) {
-                response = ResponseEntity.badRequest().body(e.getMessage());
-            } else if (e.getMessage().equals("Usuario no encontrado")) {
+            if (e.getMessage().equals("Serie ya añadida a la lista de pendientes o empezada")) {
+                response = ResponseEntity.ok().build();
+            } else if (e.getMessage().equals("Serie ya vista")) {
+                response = ResponseEntity.ok().build();
+            } else if (e.getMessage().equals("Serie no encontrada")) {
+                response = ResponseEntity.notFound().build();
+            }else if (e.getMessage().equals("Usuario no encontrado")) {
                 response = ResponseEntity.badRequest().body(e.getMessage());
             } else {
                 response = ResponseEntity.badRequest().body(e.getMessage());
@@ -182,7 +191,7 @@ public class UsuarioController {
             } else if (e.getMessage().equals("Usuario no encontrado")) {
                 response = ResponseEntity.notFound().build();
             } else if (e.getMessage().equals("Serie ya añadida a la lista de pendientes")) {
-                response = ResponseEntity.ok("Serie ya añadida a la lista de pendientes");
+                response = ResponseEntity.ok().build();
             } else {
                 response = ResponseEntity.badRequest().body(e.getMessage());
             }

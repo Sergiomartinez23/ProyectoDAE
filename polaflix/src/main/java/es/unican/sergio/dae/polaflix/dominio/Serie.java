@@ -14,9 +14,7 @@ public class Serie {
     @JsonView({Views.SerieBasic.class, Views.SerieDetail.class, Views.CapituloBasic.class})
     @Id @GeneratedValue(strategy = GenerationType.AUTO)  private int id;
 
-    public enum Tipo {
-        silver, gold, estandar
-    }
+  
     @JsonView({Views.SerieBasic.class, Views.SerieDetail.class, Views.FacturaDetail.class})
     private String titulo;
     @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
@@ -30,15 +28,15 @@ public class Serie {
     @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
     private int temporadas;
     @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
-    @ManyToMany private List<Participante> actores;
+    @ManyToMany private Set<Participante> actores;
 
     @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
-    @ManyToMany private List<Participante> director;
+    @ManyToMany private Set<Participante> director;
     
     public Serie() {
         this.episodiosporTemporada = new ArrayList<>(Arrays.asList(10, 10, 10, 10, 10, 10, 10, 10, 10, 10));
     }
-    public Serie(String titulo, String descripcion, Tipo tipo, int temporadas, List<Participante> actores, List<Participante> director) {
+    public Serie(String titulo, String descripcion, Tipo tipo, int temporadas, Set<Participante> actores, Set<Participante> director) {
         this();
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -89,6 +87,23 @@ public class Serie {
 
     public int getTemporadas() {
         return temporadas;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (this.id == ((Serie)obj).getId()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override 
+    public int hashCode() {
+        return this.id;
     }
 
 }

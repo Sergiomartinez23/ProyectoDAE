@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import es.unican.sergio.dae.polaflix.repository.facturaRepository;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import es.unican.sergio.dae.polaflix.dominio.Factura; 
 
 @RestController
+@CrossOrigin(origins = "*")
+
 public class FacturaController {
 
     @Autowired

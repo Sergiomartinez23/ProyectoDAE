@@ -9,5 +9,6 @@ import es.unican.sergio.dae.polaflix.dominio.Usuario;
 import java.util.List;
 public interface serieRepository extends JpaRepository<Serie, Integer> {
 
-    List<Serie> findByTituloContains(String nombre);
+    List<Serie> findByTituloContainsIgnoreCase(String nombre);
+    List<Serie> findByTituloStartsWithIgnoreCase(String nombre);
 }    

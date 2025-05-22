@@ -19,8 +19,24 @@ public class SerieService {
     protected serieRepository sr;
     @Transactional
     public List<Serie> getSerieNombre(String nombre) {
-        return sr.findByTituloContains(nombre);
+        return sr.findByTituloContainsIgnoreCase(nombre);
 
         
+    }
+
+    @Transactional
+    public List<Serie> getSerieNombreStart(String nombre) {
+    
+        return sr.findByTituloStartsWithIgnoreCase(nombre);
+    }
+
+    @Transactional
+    public List<Serie> getAllSeries() {
+        return sr.findAll();
+    }
+
+    @Transactional
+    public Serie getSerieById(Integer id) {
+        return sr.findById(id).orElse(null);
     }
 }
