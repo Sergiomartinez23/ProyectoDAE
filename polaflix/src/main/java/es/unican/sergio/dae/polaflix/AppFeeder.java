@@ -193,10 +193,12 @@ public class AppFeeder implements CommandLineRunner {
         usuario.addSeriePorVer(serie3);
         Capitulo capitulo1 = new Capitulo(1, "cap1", "desc", "url", 2, serie1);
         Capitulo capitulo2 = new Capitulo(2, "cap2", "desc", "url", 1, serie1);
+        Capitulo capitulo4 = new Capitulo(3, "cap2", "desc", "url", 1, serie1);
         Capitulo capitulo3 = new Capitulo(1, "cap1", "desc", "url", 2, serie2);
 
         usuario.verCapitulo(capitulo1);
         usuario.verCapitulo(capitulo2);
+        usuario.verCapitulo(capitulo4);
         usuario.verCapitulo(capitulo3);
         // System.out.println("Facturas: " + usuario.facturas.size());
         System.out.println("Series por ver: " + usuario.getSeriesPorVer().size());

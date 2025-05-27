@@ -107,12 +107,10 @@ public class Usuario {
     }
     public int addSeriePorVer(Serie serie) {
         if (seriesPorVer.contains(serie)) {
-            System.out.println("Serie ya vista: " + serie.getTitulo());
             return 0;
         }
         for (CapsVistosSerie caps : series) {
             if (caps.getSerie().getId() == serie.getId()) {
-                System.out.println("Serie ya vista: " + serie.getTitulo());
                 return 0;
             }
             
@@ -162,11 +160,11 @@ public class Usuario {
         Serie serie = capitulo.getSerie();
         boolean encontrado = false; 
         Factura factura = ultimaFactura();
-        CapVisto capVisto = new CapVisto(numero, temporada);
+        CapVisto capVisto = new CapVisto(numero, temporada); // crea un capitulo visto
         
         
         
-        
+        //Itera las series vistas por el usuario y busca la serie y añade el capitulo visto
         for (CapsVistosSerie capsVistosSerie : series) {
             if (capsVistosSerie.getSerie().equals(serie)) {  
                 System.out.println("ID:" + serie.getId()); 
@@ -183,20 +181,23 @@ public class Usuario {
                 }
                 encontrado = true;
             }
-        }
+        } 
+        // Si no se encuentra la serie en la lista de series vistas, se añade una nueva entrada
         if (!encontrado) {
             CapsVistosSerie capsVistosSerie = new CapsVistosSerie(serie);
             capsVistosSerie.addCapitulo(capVisto);
             series.add(capsVistosSerie);
         }
         
+        // Si la serie ya estaba en la lista de series por ver, se elimina
         if (seriesPorVer.contains(serie)) {
             seriesPorVer.remove(serie);
         }
 
         System.out.println("Capitulo visto: " + capitulo.getTitulo());
 
-
+        // Si el modo de pago es por visualización, se añade el precio del capítulo a la factura
+         // Se añade el capitulo a la factura
         if (modoDePago == Pago.porVisualizacion) {
             System.out.println("Precio: " + capitulo.getPrecio());
             factura.addCapitulo(capitulo.getPrecio(), temporada, numero, serie);
