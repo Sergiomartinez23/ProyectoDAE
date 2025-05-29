@@ -1,0 +1,60 @@
+.header-container {
+  background-color: #000000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.header-left, .header-right {
+  flex: 0 0 auto;
+}
+
+.header-center {
+  flex: 1 1 auto;
+  text-align: center;
+  color: #fff;
+}
+.logo {
+  width: 100px;
+  height: auto;
+}
+.user-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+
+/* Container for the links */
+.header-links {
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  justify-content: flex-start;
+}
+
+/* Style the links */
+.header-links a {
+  text-decoration: none;
+  color: #007bff; /* Bootstrap-style blue */
+  font-weight: 500;
+  padding: 5px 10px;
+}
+
+.header-links a:hover {
+  text-decoration: underline;
+}
+
+/* Optional: style for active link */
+.active-link {
+  font-weight: bold;
+  border-bottom: 2px solid #007bff;
+}
+
+/* Vertical divider line */
+

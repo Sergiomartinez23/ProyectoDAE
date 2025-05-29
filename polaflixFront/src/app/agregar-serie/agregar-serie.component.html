@@ -1,0 +1,42 @@
+<div class="upContainer">
+    <div class="letras-menu">
+    <ng-container *ngFor="let letra of letras">
+        <a (click)="buscarEmpieza(letra)" routerLinkActive="active-link" class="letras">{{letra}}</a>
+    </ng-container>
+    </div>
+    <div class="search-container">
+        <input
+            type="text"
+            [(ngModel)]="busquedaActual"
+            placeholder="Search input"
+            class="search-input"
+        />
+        <button class="search-button" (click)="buscar(busquedaActual)">Search</button>
+    </div>
+
+</div>
+<div class="black-divider"></div>
+
+
+
+@if (haySeries) {
+    <div class="series">
+        <div class="serie-container">
+            <ng-container *ngFor="let serie of series">
+                <div class="serie">
+                    <a (click)="mostrarDesc(serie)">{{ serie.titulo }}</a>
+                    <a class="link" (click)="anhadir(serie)">Agregar</a>  
+                </div>
+                <div class="descripcion" *ngIf="serie.showDescripcion">
+                    <p>{{serie.descripcion}}</p>
+                    <p>Dirigida por: {{ getDirectoresNombres(serie) }}</p>
+                    <p>Actores: {{ getActoresNombres(serie) }}</p>
+                </div> 
+            </ng-container>
+        </div>
+    </div>
+} @else {
+    <div class="no-series">
+        <p>No hay series para mostrar.</p>
+    </div>
+}

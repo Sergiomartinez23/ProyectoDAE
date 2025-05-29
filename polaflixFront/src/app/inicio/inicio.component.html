@@ -1,0 +1,31 @@
+<section class="series-section">
+  <div class="series-category">
+    <h2>Empezadas</h2>
+    <ul>
+      <ng-container *ngFor="let serie of seriesEmpezadas">
+        <li>{{ serie.serie.titulo }}</li>
+      </ng-container>
+    </ul>
+  </div>
+
+  <div class="series-category">
+    <h2>Pendientes</h2>
+    <ul>
+      <ng-container *ngFor="let serie of seriesPorVer">
+        <li>{{ serie.titulo }}</li>
+      </ng-container>
+    </ul>
+  </div>
+
+  <div class="series-category">
+    <h2>Terminadas</h2>
+    <ul>
+      <ng-container *ngFor="let serie of seriesTerminadas">
+        <li>{{ serie.serie.titulo }}</li>
+      </ng-container>
+    </ul>
+  </div>
+  <div class="banner-publi">
+    <h3>¡TODO EL FUTBOL EN SINVIRUS.ORG!</h3>
+  </div>
+</section>

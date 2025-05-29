@@ -1,0 +1,6 @@
+.black-divider {
+  height: 1px;
+  background-color: black;
+  width: 95%;        /* 95% width */
+  margin: 16px auto; /* vertical spacing + auto left/right centering */
+}
