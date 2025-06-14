@@ -22,7 +22,7 @@ public class Capitulo {
     @JsonView({Views.SerieDetail.class, Views.CapituloBasic.class})
     private int temporada;
     // @JsonView(Views.CapituloBasic.class)
-    @OneToOne private Serie   serie;
+    @ManyToOne private Serie   serie;
 
     public Capitulo() {
     }

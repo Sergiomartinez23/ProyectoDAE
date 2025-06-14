@@ -158,7 +158,7 @@ public class UsuarioController {
         
     }
 
-    @DeleteMapping("usuarioSeriesPorVer/{usuarioId}")
+    @DeleteMapping("usuario/{usuarioId}/SeriesPorVer")
     public ResponseEntity<?> seriePendienteDelete(@PathVariable Integer usuarioId, @RequestBody Serie serie) {
 
         ResponseEntity<?> response = null;

@@ -25,8 +25,12 @@ public class Usuario {
     
 
     @JsonView(Views.UsuarioFactura.class)
-    @OneToMany(cascade = CascadeType.PERSIST) private List<Factura> facturas;
-    @OneToMany(cascade = CascadeType.ALL) private Set<CapsVistosSerie> series;
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.MERGE})
+    @JoinColumn(name = "usuario_id")
+    private List<Factura> facturas;
+    @OneToMany(cascade = CascadeType.ALL) 
+    @JoinColumn(name = "usuario_id")
+    private Set<CapsVistosSerie> series;
     @OneToMany private Set<Serie> seriesPorVer;
     public Usuario() {
     }

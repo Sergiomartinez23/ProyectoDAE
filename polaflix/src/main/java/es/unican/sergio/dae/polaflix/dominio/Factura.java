@@ -12,8 +12,7 @@ import es.unican.sergio.dae.polaflix.rest.Views;
 @Entity
 public class Factura{
     @JsonView({Views.UsuarioFactura.class, Views.FacturaDetail.class})
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)  private int id;
-    // private Usuario usuario;
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)  private int id;
     @JsonView({Views.UsuarioFactura.class, Views.FacturaDetail.class})
     private int mes;
     @JsonView({Views.UsuarioFactura.class, Views.FacturaDetail.class})
@@ -21,7 +20,9 @@ public class Factura{
     @JsonView({Views.UsuarioFactura.class, Views.FacturaDetail.class})
     private float importe;
     @JsonView(Views.FacturaDetail.class)
-    @OneToMany(cascade = CascadeType.ALL) private List<ItemFactura> items;
+    @OneToMany(cascade = CascadeType.ALL) 
+    @JoinColumn(name = "factura_id")
+    private List<ItemFactura> items;
     
     public Factura() {
     }

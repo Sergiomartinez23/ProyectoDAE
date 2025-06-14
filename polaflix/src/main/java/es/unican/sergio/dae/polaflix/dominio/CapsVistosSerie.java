@@ -9,10 +9,11 @@ import jakarta.persistence.*;
 import es.unican.sergio.dae.polaflix.rest.Views;
 @Entity
 public class CapsVistosSerie {
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) 
+    @OneToMany(cascade = CascadeType.ALL) 
+    @JoinColumn(name = "capsVistosSerie_id")
     private SortedSet<CapVisto> capsVistos; 
     @JsonView(Views.serieUsuario.class)
-    @OneToOne(fetch = FetchType.LAZY) 
+    @OneToOne
     private Serie serie;
     @JsonView(Views.serieUsuario.class)
     @Id @GeneratedValue(strategy = GenerationType.AUTO)  

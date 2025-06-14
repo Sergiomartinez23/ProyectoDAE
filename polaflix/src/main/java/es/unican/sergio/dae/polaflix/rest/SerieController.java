@@ -64,6 +64,10 @@ public class SerieController {
     @GetMapping("/seriesEmpieza/{nombre}")
     @JsonView(Views.SerieBasic.class)
     public ResponseEntity<List<Serie>> getSeriesByNombreEmpieza(@PathVariable String nombre) {
+        System.out.println("Nombre recibido: " + nombre);
+        if (nombre == null || nombre.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
         List<Serie> series = ss.getSerieNombreStart(nombre);
         ResponseEntity<List<Serie>> response = null;
         if (series.isEmpty()) {

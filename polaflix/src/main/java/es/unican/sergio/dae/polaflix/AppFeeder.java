@@ -198,7 +198,7 @@ public class AppFeeder implements CommandLineRunner {
 
         usuario.verCapitulo(capitulo1);
         usuario.verCapitulo(capitulo2);
-        usuario.verCapitulo(capitulo4);
+        
         usuario.verCapitulo(capitulo3);
         // System.out.println("Facturas: " + usuario.facturas.size());
         System.out.println("Series por ver: " + usuario.getSeriesPorVer().size());
@@ -208,6 +208,10 @@ public class AppFeeder implements CommandLineRunner {
 		System.out.println("Application feeded");
 		usuario.addSeriePorVer(serie3);
 		ur.save(usuario);
+
+        usuario.verCapitulo(capitulo4);
+        ur.save(usuario);
+        System.out.println("Factura 1: " + usuario.getFactura(5, 2025).getImporte());
         // Factura fact = usuario.getFactura(4, 2025);
 
         // List<CapsVistosSerie> series = usuario.getSeriesEmpezadas();

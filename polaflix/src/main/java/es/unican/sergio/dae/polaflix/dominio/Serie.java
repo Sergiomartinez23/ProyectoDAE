@@ -20,7 +20,9 @@ public class Serie {
     @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
     private String descripcion;
     @JsonView(Views.SerieDetail.class)
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) private List<Capitulo> capitulos;
+    @OneToMany(cascade = CascadeType.ALL) 
+    @JoinColumn(name = "serie_id")
+    private List<Capitulo> capitulos;
     @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
     private Tipo tipo;
     @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
@@ -78,6 +80,7 @@ public class Serie {
     }
     public Capitulo getCapitulo(int temporada, int episodio) {
         int pos = 0;
+        // Accede a un capitulo determinado por ello se ha de recorrer posicionalmente
         for (int i = 0; i < temporada-1; i++) {
             pos = pos + episodiosporTemporada.get(i);
         }
