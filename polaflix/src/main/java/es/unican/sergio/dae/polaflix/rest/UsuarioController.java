@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -27,6 +28,8 @@ import java.util.List;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -38,163 +41,97 @@ public class UsuarioController {
     @Autowired
     protected UsuarioService us;
 
-    
-    @GetMapping("/usuario/{id}")
-    @JsonView(Views.UsuarioBasic.class)
-    public ResponseEntity<Usuario> getUsuario(@PathVariable Integer id) {
+    @GetMapping("/usuario/{usuarioId}/series/{serieId}")
+    @JsonView(Views.serieUsuarioDetail.class)
+    public ResponseEntity<VistaSerieUsuario> getSerieDetalle(@PathVariable Integer usuarioId, @PathVariable Integer serieId) {
+        ResponseEntity<VistaSerieUsuario> response = null;
 
-        ResponseEntity<Usuario> response = null;
-        try { 
-            Usuario usuario = us.getUsuario(id);
-            response = ResponseEntity.ok(usuario);
-        }
-        catch (Exception e) {
+        VistaSerieUsuario serie = us.getSerieUsuario(usuarioId, serieId);
+
+        if (serie != null) {
+            response = ResponseEntity.ok(serie);
+        } else {
             response = ResponseEntity.notFound().build();
         }
-        
         return response;
-    }
 
-    @GetMapping("/facturas/{usuarioId}")
+    }
+    
+
+    @GetMapping("/usuarios/{usuariosId}/facturas")
     @JsonView(Views.UsuarioFactura.class)
     public ResponseEntity<List<Factura>> getFacturas(@PathVariable Integer usuarioId) {
         ResponseEntity<List<Factura>> response = null;
-        try { 
-            List<Factura> facturas = us.getFacturas(usuarioId);
+        
+        List<Factura> facturas = us.getFacturas(usuarioId);
+        if (facturas != null) {
             response = ResponseEntity.ok(facturas);
-        }
-        catch (Exception e) {
+        } else {
+            response = ResponseEntity.notFound().build();
+        }        
+        return response;
+    }
+
+    @GetMapping("/usuarios/{usuarioId}/Series")
+    @JsonView(Views.serieUsuario.class)
+    public ResponseEntity<SeriesVistasUsuario> getSeriesUsuario(@PathVariable Integer usuarioId) {
+        ResponseEntity<SeriesVistasUsuario> response = null;
+        SeriesVistasUsuario seriesVistasUsuario = us.getSeriesUsuario(usuarioId);
+        if (seriesVistasUsuario != null) {
+            response = ResponseEntity.ok(seriesVistasUsuario);
+        } else {
             response = ResponseEntity.notFound().build();
         }
         
         return response;
     }
-
     
-    @GetMapping("/usuarioSeriesEmpezadas/{usuarioId}")
-    @JsonView(Views.serieUsuario.class)
-    public ResponseEntity<List<CapsVistosSerie>> getSeriesUsuario (@PathVariable Integer usuarioId) {
-        ResponseEntity<List<CapsVistosSerie>> response = null;
-        try { 
-            List<CapsVistosSerie> series = us.getSeriesEmpezadas(usuarioId);
-            response = ResponseEntity.ok(series);
-        }
-        catch (Exception e) {
-            response = ResponseEntity.notFound().build();
-        }
-        
-        return response;
 
-    }
-
-    @GetMapping("/usuarioSeriesTerminadas/{usuarioId}")
-    @JsonView(Views.serieUsuario.class)
-    public ResponseEntity<List<CapsVistosSerie>> getSeriesUsuarioTerminadas (@PathVariable Integer usuarioId) {
-        ResponseEntity<List<CapsVistosSerie>> response = null;
-        try { 
-            List<CapsVistosSerie> series = us.getSeriesTerminadas(usuarioId);
-            response = ResponseEntity.ok(series);
-        }
-        catch (Exception e) {
-            response = ResponseEntity.notFound().build();
-        }
-        
-        return response;
-
-    }
-
-    @GetMapping("/usuarioSeriesPorVer/{usuarioId}")
-    @JsonView(Views.SerieBasic.class)
-    public ResponseEntity<Set<Serie>> getSeriesUsuarioPorVer (@PathVariable Integer usuarioId) {
-        ResponseEntity<Set<Serie>> response = null;
-        try { 
-            Set<Serie> series = us.getSeriesPorVer(usuarioId);
-            response = ResponseEntity.ok(series);
-        }
-        catch (Exception e) {
-            response = ResponseEntity.notFound().build();
-        }
-        
-        return response;
-    }
-
-    @GetMapping("/capVisto/{usuarioId}/{serieId}")
-    @JsonView(Views.serieUsuarioDetail.class)
-    public ResponseEntity<Set<CapVisto>> getCapVisto(@PathVariable Integer usuarioId, @PathVariable Integer serieId) {
-        ResponseEntity<Set<CapVisto>> response = null;
-        try {
-            Set<CapVisto> capitulosVistos = us.getCapsVistosSerie(usuarioId, serieId);
-            response = ResponseEntity.ok(capitulosVistos);
-            
-        } catch (Exception e) {
-            response = ResponseEntity.notFound().build();
-        }
-        
-        return response;
-    }
-
-    @PutMapping("usuarioSeriesPorVer/{usuarioId}")
-    public ResponseEntity seriePendienteAdd(@PathVariable Integer usuarioId, @RequestBody Serie serie) {
-
-        ResponseEntity response = null;
-        try  {
-            us.anhadirPendiente(serie, usuarioId);
-            response =  ResponseEntity.ok().build();
-        } catch (Exception e) {
-            if (e.getMessage().equals("Serie ya añadida a la lista de pendientes o empezada")) {
-                response = ResponseEntity.ok().build();
-            } else if (e.getMessage().equals("Serie ya vista")) {
-                response = ResponseEntity.ok().build();
-            } else if (e.getMessage().equals("Serie no encontrada")) {
-                response = ResponseEntity.notFound().build();
-            }else if (e.getMessage().equals("Usuario no encontrado")) {
-                response = ResponseEntity.badRequest().body(e.getMessage());
-            } else {
-                response = ResponseEntity.badRequest().body(e.getMessage());
-            }
-        }
-        
-        return response;
-        
-    }
-
-    @DeleteMapping("usuario/{usuarioId}/SeriesPorVer")
-    public ResponseEntity<?> seriePendienteDelete(@PathVariable Integer usuarioId, @RequestBody Serie serie) {
-
+    @PostMapping("/usuarios/{usuarioId}/verCapitulo/{idCapitulo}")
+    public ResponseEntity<?> verCapitulo(@PathVariable Integer usuarioId, @PathVariable Integer idCapitulo) {
         ResponseEntity<?> response = null;
-        try{
-            us.borrarSeriePendiente(serie, usuarioId);
-            response = ResponseEntity.ok("Serie eliminada de la lista de pendientes");
-        }
-        catch (Exception e) {
-            if(e.getMessage().equals("Serie no encontrada")) {
-                response = ResponseEntity.notFound().build();
-            } else if (e.getMessage().equals("Usuario no encontrado")) {
-                response = ResponseEntity.notFound().build();
-            } else {
-                response = ResponseEntity.badRequest().body(e.getMessage());
-            }
-        }
+        
+        int result = us.verCapitulo(idCapitulo, usuarioId);
+        
+        if (result == 0) {
+            response = ResponseEntity.ok("Capitulo ya estaba en la lista de capitulos vistos");
+        } else if (result == -1) {
+            response = ResponseEntity.notFound().build();
+        } else if (result == -2) {
+            response = ResponseEntity.badRequest().body("Capitulo no encontrado");
+        } 
+    
         
         return response;
     }
 
-    @PutMapping("verCapitulo/{usuarioId}")
-    public ResponseEntity<?> verCapitulo(@PathVariable Integer usuarioId, @RequestBody Capitulo Capitulo) {
+    @PutMapping("/usuarios/{usuarioId}/SeriesPorVer")
+    public ResponseEntity<?> anhadirPendiente(@PathVariable Integer usuarioId, @RequestBody Serie serie) {
         ResponseEntity<?> response = null;
-        try {
-            us.verCapitulo(Capitulo, usuarioId);
-            response = ResponseEntity.ok("Capitulo visto añadido a la lista de capitulos vistos");
-        } catch (Exception e) {
-            if(e.getMessage().equals("Capitulo no encontrado")) {
-                response = ResponseEntity.notFound().build();
-            } else if (e.getMessage().equals("Usuario no encontrado")) {
-                response = ResponseEntity.notFound().build();
-            } else if (e.getMessage().equals("Serie ya añadida a la lista de pendientes")) {
-                response = ResponseEntity.ok().build();
-            } else {
-                response = ResponseEntity.badRequest().body(e.getMessage());
-            }
+        
+        int result = us.anhadirPendiente(serie, usuarioId);
+        if (result == 1) {
+            response = ResponseEntity.ok("Serie añadida a la lista de pendientes");
+        } else if (result == 0) {
+            response = ResponseEntity.ok("Serie ya estaba en la lista de pendientes");
+        } else if (result == -1 || result == -2) {
+            response = ResponseEntity.notFound().build();
+        } 
+        
+        return response;
+    }
+
+    @DeleteMapping("/usuarios/{usuarioId}/SeriesPorVer")
+    public ResponseEntity<?> borrarSeriePendiente(@PathVariable Integer usuarioId, @RequestBody Serie serie) {
+        ResponseEntity<?> response = null;
+        
+        int result = us.borrarSeriePendiente(serie, usuarioId);
+        if (result == 0) {
+            response = ResponseEntity.ok("Serie borrada de la lista de pendientes");
+        } else if (result == 1) {
+            response = ResponseEntity.ok("Serie no estaba en la lista de pendientes");
+        } else if (result == -1 || result == -2) {
+            response = ResponseEntity.notFound().build();
         }
         
         return response;

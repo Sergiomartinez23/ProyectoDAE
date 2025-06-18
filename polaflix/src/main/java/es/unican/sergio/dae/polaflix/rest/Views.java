@@ -8,7 +8,8 @@ public class Views {
     public static interface SerieBasic{}
     public static interface SerieDetail {}
     public static interface serieUsuario extends SerieBasic{}
-    public static interface serieUsuarioDetail extends serieUsuario{}
+    //Endpoint /usuario/{usuario-id}/series/{id} 
+    public static interface serieUsuarioDetail {}
     
 
     public static interface FacturaDetail{}

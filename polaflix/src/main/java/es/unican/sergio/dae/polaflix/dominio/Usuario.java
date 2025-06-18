@@ -30,6 +30,7 @@ public class Usuario {
     private List<Factura> facturas;
     @OneToMany(cascade = CascadeType.ALL) 
     @JoinColumn(name = "usuario_id")
+    
     private Set<CapsVistosSerie> series;
     @OneToMany private Set<Serie> seriesPorVer;
     public Usuario() {
@@ -209,6 +210,16 @@ public class Usuario {
         else {
             factura.addCapitulo(0, temporada, numero, serie);
         }
+    }
+
+
+    public CapsVistosSerie getSerieVistas(Serie serie) {
+        for (CapsVistosSerie caps : series) {
+            if (caps.getSerie().equals(serie)) {
+                return caps;
+            }
+        }
+        return null;
     }
   
 }

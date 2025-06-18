@@ -11,6 +11,7 @@ import es.unican.sergio.dae.polaflix.rest.Views;
 public class CapsVistosSerie {
     @OneToMany(cascade = CascadeType.ALL) 
     @JoinColumn(name = "capsVistosSerie_id")
+    @JsonView(Views.serieUsuarioDetail.class)
     private SortedSet<CapVisto> capsVistos; 
     @JsonView(Views.serieUsuario.class)
     @OneToOne

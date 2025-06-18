@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 public class Participante {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)  private int id;
     
-    @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
+    @JsonView({Views.SerieBasic.class, Views.serieUsuarioDetail.class})
     private String nombreCompleto;
 
 

@@ -9,30 +9,31 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
 
+
 @Entity
 public class Serie {
-    @JsonView({Views.SerieBasic.class, Views.SerieDetail.class, Views.CapituloBasic.class})
+    @JsonView({Views.SerieBasic.class, Views.serieUsuarioDetail.class, Views.CapituloBasic.class})
     @Id @GeneratedValue(strategy = GenerationType.AUTO)  private int id;
 
   
-    @JsonView({Views.SerieBasic.class, Views.SerieDetail.class, Views.FacturaDetail.class})
+    @JsonView({Views.SerieBasic.class, Views.serieUsuarioDetail.class, Views.FacturaDetail.class})
     private String titulo;
-    @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
+    @JsonView({Views.SerieBasic.class, Views.serieUsuarioDetail.class})
     private String descripcion;
-    @JsonView(Views.SerieDetail.class)
+    @JsonView(Views.serieUsuarioDetail.class)
     @OneToMany(cascade = CascadeType.ALL) 
     @JoinColumn(name = "serie_id")
     private List<Capitulo> capitulos;
-    @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
+    @JsonView({Views.SerieBasic.class, Views.serieUsuarioDetail.class})
     private Tipo tipo;
-    @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
+    @JsonView({Views.SerieBasic.class, Views.serieUsuarioDetail.class})
     private List<Integer> episodiosporTemporada;
-    @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
+    @JsonView({Views.SerieBasic.class, Views.serieUsuarioDetail.class})
     private int temporadas;
-    @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
+    @JsonView({Views.SerieBasic.class, Views.serieUsuarioDetail.class})
     @ManyToMany private Set<Participante> actores;
 
-    @JsonView({Views.SerieBasic.class, Views.SerieDetail.class})
+    @JsonView({Views.SerieBasic.class, Views.serieUsuarioDetail.class})
     @ManyToMany private Set<Participante> director;
     
     public Serie() {
@@ -44,6 +45,9 @@ public class Serie {
         this.descripcion = descripcion;
         this.tipo = tipo;
         this.capitulos = new ArrayList<>();
+        // Crear un capítulo falso para pruebas
+        Capitulo capituloFalso = new Capitulo(1, "Capítulo Piloto", "Descripción del capítulo piloto", "http://url-del-capitulo.com", 1, this);
+        addCapitulo(capituloFalso);
         this.temporadas = temporadas;
         // this.episodiosporTemporada = new ArrayList<>(temporadas);
         this.episodiosporTemporada = new ArrayList<>(Arrays.asList(10, 10, 10, 10, 10, 10, 10, 10, 10, 10));
@@ -52,6 +56,11 @@ public class Serie {
     }
     public int getId() {
         return id;
+    }
+    // Esto esta para hardcoder el capitulo falso
+    public void addCapitulo(Capitulo capitulo) {
+        capitulo.setSerie(this);  // Make sure the Capitulo knows its Serie
+        this.capitulos.add(capitulo);
     }
     public String getTitulo() {
         return titulo;

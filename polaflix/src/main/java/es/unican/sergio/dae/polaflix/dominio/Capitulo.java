@@ -9,17 +9,17 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 public class Capitulo {
-    @JsonView({Views.SerieDetail.class, Views.CapituloBasic.class})
+    @JsonView({Views.serieUsuarioDetail.class, Views.CapituloBasic.class})
     @Id @GeneratedValue(strategy = GenerationType.AUTO)  private int id;
-    @JsonView({Views.SerieDetail.class, Views.CapituloBasic.class})
+    @JsonView({Views.serieUsuarioDetail.class, Views.CapituloBasic.class})
     private int numero;
-    @JsonView({Views.SerieDetail.class, Views.CapituloBasic.class})
+    @JsonView({Views.serieUsuarioDetail.class, Views.CapituloBasic.class})
     private String titulo;
-    @JsonView({Views.SerieDetail.class, Views.CapituloBasic.class})
+    @JsonView({Views.serieUsuarioDetail.class, Views.CapituloBasic.class})
     private String descripcion;
-    @JsonView({Views.SerieDetail.class, Views.CapituloBasic.class})
+    @JsonView({Views.serieUsuarioDetail.class, Views.CapituloBasic.class})
     private String url;
-    @JsonView({Views.SerieDetail.class, Views.CapituloBasic.class})
+    @JsonView({Views.serieUsuarioDetail.class, Views.CapituloBasic.class})
     private int temporada;
     // @JsonView(Views.CapituloBasic.class)
     @ManyToOne private Serie   serie;
@@ -36,6 +36,9 @@ public class Capitulo {
     }
     public int getId() {
         return id;
+    }
+    public void setSerie(Serie serie) {
+        this.serie = serie;
     }
     public Serie getSerie() {
         return serie;
